@@ -20,8 +20,6 @@ gas: Green Abandoned Shack: 414
 
 ### Leo:
 - ofow: On Forest or Water
-- ofom: On Forest or Mountain
-- wtsoaws: Within Three Spaces of a White Structure
 
 ### Jean:
 - ofow: On Forest or Water

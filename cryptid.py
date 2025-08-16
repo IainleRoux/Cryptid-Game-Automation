@@ -47,11 +47,17 @@ def init():
 def get_possible_cells(board, player_clues):
     player_possible_cells: dict[str, set[str]] = {}
 
+    known_player_clues = set()
+
+    for player_name, player_clue_set in player_clues.items():
+        if len(player_clue_set) == 1:
+            known_player_clues.union(player_clue_set)
+
     for player_name, player_clue_set in player_clues.items():
         player_possible_cells[player_name] = set()
 
         for cell in board:
-            if any(map(lambda clue: CLUE_PREDICATE_MAP[clue](cell), player_clue_set)):
+            if any(map(lambda clue: CLUE_PREDICATE_MAP[clue](cell), filter(lambda x: x not in known_player_clues or len(player_clue_set) > 1, player_clue_set))):
                 player_possible_cells[player_name].add(cell[ID])
 
     for player_name, cells in player_possible_cells.items():
