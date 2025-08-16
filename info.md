@@ -31,11 +31,15 @@ gas: Green Abandoned Shack: 414
 
 ### Nelson:
 - wosod: Within One Space of Desert
+- ofow: On Forest or Water
 
 ### Iain:
 - wosow: Within One Space of Water
 
-### All Clues
+### Possible Cryptid Cells:
+- All states
+
+### All Clues:
 - ofod: On Forest or Desert
 - ofow: On Forest or Water
 - ofos: On Forest or Swamp

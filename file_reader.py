@@ -2,8 +2,10 @@ import re
 
 from board import init_board
 
+INFO_FILE = "info.md"
 
-def read_info_file(file_name):
+
+def read_info_file(file_name = INFO_FILE):
     board_orders = None
     structure_placement = None
 
@@ -62,7 +64,7 @@ def read_player_clues(file):
     player_clues: dict[str, set[str]] = {}
 
     for line in file.readlines():
-        if found and line.startswith('### All Clues'):
+        if found and line.startswith('### Possible Cryptid Cells:'):
             break
 
         if found and line.startswith('###'):
@@ -82,3 +84,43 @@ def read_player_clues(file):
             found = True
 
     return player_clues
+
+def write_to_possible_cells_to_info_file(cells: set):
+    lines = None
+
+    with open(INFO_FILE, "r") as f:
+        lines = f.readlines()
+
+    with open(INFO_FILE, "w") as f:
+        found = False
+        wrote_lines = False
+
+        for line in lines:
+            if not found:
+                f.write(line)
+
+            if found and wrote_lines and line.startswith('### All Clues'):
+                f.write(line)
+                found = False
+
+            if found and not wrote_lines:
+                for i in range(1, 7):
+                    filtered_cells = list(filter(lambda x: int(x[0]) == i, cells))
+
+                    for j, cell in enumerate(filtered_cells):
+                        if j == 0:
+                            f.write(f"- ")
+
+                        f.write(f"{cell}")
+
+                        if j < len(filtered_cells) - 1:
+                            f.write(f", ")
+
+                    if filtered_cells:
+                        f.write(f"\n")
+
+                f.write(f"\n")
+                wrote_lines = True
+
+            if line.startswith('### Possible Cryptid Cells:'):
+                found = True

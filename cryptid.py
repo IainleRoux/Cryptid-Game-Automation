@@ -1,7 +1,7 @@
 
 from board import DISTANCES
 from constants import ABANDONED_SHACK, BEAR, BLUE, COUGAR, DESERT, FOREST, GREEN, ID, MOUNTAIN, STANDING_STONE, SWAMP, WATER, WHITE
-from file_reader import read_info_file
+from file_reader import read_info_file, write_to_possible_cells_to_info_file
 
 
 def get_predicate1(criteria: str, distance: int):
@@ -40,7 +40,7 @@ CLUE_PREDICATE_MAP = {
 
 
 def init():
-    cell_list, player_clues = read_info_file("info.md")
+    cell_list, player_clues = read_info_file()
 
     return cell_list, player_clues
 
@@ -75,9 +75,12 @@ def get_possible_cells(board, player_clues):
 
     return intersetion_of_player_cells
 
+
 if __name__ == "__main__":
     cell_list, player_clues = init()
 
     possible_cells = get_possible_cells(cell_list, player_clues)
 
     print(f"Possible cryptid cells ({len(possible_cells)}): {possible_cells}")
+
+    write_to_possible_cells_to_info_file(possible_cells)
