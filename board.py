@@ -2,11 +2,10 @@ from constants import ABANDONED_SHACK, ANIMAL, BEAR, BLUE, BOTTOM_RIGHT, COLOUR,
 
 import json
 
-# Where the board json file is stored (relative to this file)
 BOARDS_FILE_NAME = "boards.json"
 
 # The names used in the info file
-STRUCTURE_MAP = {
+STRUCTURE_NAMING_MAP = {
     "bss": (BLUE, STANDING_STONE),
     "bas": (BLUE, ABANDONED_SHACK),
     "wss": (WHITE, STANDING_STONE),
@@ -15,8 +14,7 @@ STRUCTURE_MAP = {
     "gas": (GREEN, ABANDONED_SHACK),
 }
 
-# The maximum distances that matter for each landmark
-MAX_DISTANCES = {
+MAX_DISTANCE_RELEVANT_PER_LANDMARK = {
     FOREST: 1,
     DESERT: 1,
     WATER: 1,
@@ -31,19 +29,18 @@ MAX_DISTANCES = {
     GREEN: 3
 }
 
-# (cell id, cell object)
-CELLS: dict[str, dict[str, str]] = {}
+ID_TO_CELL_MAP: dict[str, dict[str, str]] = {}
 
-# Shows if a board is inverted or not (board number 1-6, true if upright and false otherwise)
-BOARD_ORIENTATION: dict[int, bool] = {}
+# true if upright and false otherwise
+BOARD_NUMBER_TO_ORIENTATION: dict[int, bool] = {}
 
-# The order that the board are in (board number 1-6 (name of the board), board order 0-5 (where the board is starting top left and going to bottom right in a z shape))
-BOARD_ORDERS: dict[int, int] = {}
+# Board numbers (1-6) are what the boards are called
+# Board index is the order in which they are joined (top left <=> 0; top right <=> 1; ... bottom right <=> 5)
+BOARD_NUMBER_TO_BOARD_INDEX: dict[int, int] = {}
 
-# The reverse mapping of BOARD_ORDERS
-BOARD_ORDERS_REVERSED: dict[int, int] = {}
+# The reverse mapping of BOARD_NUMBER_TO_BOARD_INDEX
+BOARD_NUMBER_TO_BOARD_INDEX_REVERSED: dict[int, int] = {}
 
-# All the boards from the board json file
 BOARDS = None
 
 # Reads the board json file
@@ -54,10 +51,9 @@ def read_boards(file_name):
 
 # Initialises the board with distances and structures
 def init_board(board_orders: list[str], structure_placement: dict[str, str]):
-    global BOARD_ORIENTATION, BOARD_ORDERS, BOARDS
+    global BOARD_NUMBER_TO_ORIENTATION, BOARD_NUMBER_TO_BOARD_INDEX, BOARDS
 
-    # A list of cells
-    board: list[dict[str, str]] = []
+    cell_list: list[dict[str, str]] = []
 
     boards = read_boards(BOARDS_FILE_NAME)
     BOARDS = boards
@@ -66,23 +62,23 @@ def init_board(board_orders: list[str], structure_placement: dict[str, str]):
         board_index = int(board_order[0]) - 1
         rotation = board_order[1:]
 
-        BOARD_ORIENTATION[int(board_order[0])] = rotation == TOP_LEFT 
-        BOARD_ORDERS[int(board_order[0])] = k
-        BOARD_ORDERS_REVERSED[k] = int(board_order[0])
+        BOARD_NUMBER_TO_ORIENTATION[int(board_order[0])] = rotation == TOP_LEFT 
+        BOARD_NUMBER_TO_BOARD_INDEX[int(board_order[0])] = k
+        BOARD_NUMBER_TO_BOARD_INDEX_REVERSED[k] = int(board_order[0])
 
         board_details = boards[board_index]
 
         for i, row in enumerate(board_details[ROWS]):
             for j, column in enumerate(row[COLUMNS]):
                 column[ID] = f'{board_index+1}{i+1}{j+1}'
-                CELLS[column[ID]] = column
+                ID_TO_CELL_MAP[column[ID]] = column
 
         for key, value in structure_placement.items():
             if value.startswith(board_order[0]):
                 row = int(value[1]) - 1
                 column = int(value[2]) - 1
-                colour = STRUCTURE_MAP[key][0]
-                structure = STRUCTURE_MAP[key][1]
+                colour = STRUCTURE_NAMING_MAP[key][0]
+                structure = STRUCTURE_NAMING_MAP[key][1]
 
                 board_details[ROWS][row][COLUMNS][column][COLOUR] = colour
                 board_details[ROWS][row][COLUMNS][column][STRUCTURE] = structure
@@ -103,16 +99,15 @@ def init_board(board_orders: list[str], structure_placement: dict[str, str]):
             for column in row[COLUMNS]:
                 state = column
 
-                board.append(state)
+                cell_list.append(state)
     
-    board = apply_locality_data(board)
+    cell_list = determine_distances_from_landmarks(cell_list)
 
-    return board
+    return cell_list
     
 
-# Determines distances from landmarks based on neighbours
-def apply_locality_data(board: list[dict[str, str]]):
-    for cell in board:
+def determine_distances_from_landmarks(cell_list: list[dict[str, str]]):
+    for cell in cell_list:
         cell[DISTANCES] = {}
     
         cell[DISTANCES][cell[TERRAIN]] = 0
@@ -127,8 +122,8 @@ def apply_locality_data(board: list[dict[str, str]]):
             cell[DISTANCES][cell[COLOUR]] = 0
     
     for i in range(3):
-        for cell in board:
-            neighbours = get_neighbours(cell[ID])
+        for cell in cell_list:
+            neighbours = get_neighbours_from_cell_id(cell[ID])
 
             for neighbour in neighbours:
                 distances: dict = neighbour[DISTANCES]
@@ -140,19 +135,19 @@ def apply_locality_data(board: list[dict[str, str]]):
 
                     cell[DISTANCES][key] = min(cell[DISTANCES][key], value + 1)
 
-    for cell in board:
+    for cell in cell_list:
         distances = cell[DISTANCES]
 
         new_distances = {}
         for key, value in distances.items():
-            if value > MAX_DISTANCES[key]:  
+            if value > MAX_DISTANCE_RELEVANT_PER_LANDMARK[key]:  
                 continue
 
             new_distances[key] = value
         
         cell[DISTANCES] = new_distances
 
-    return board
+    return cell_list
 
 
 # Gets the tile as a neighbour and accounts for the beighbour being from a different board tile
@@ -180,26 +175,26 @@ def get_off_tile_neighbour(board_index, row, column):
         elif column >= 7:
             return (RIGHT, (RIGHT, REGULAR), (RIGHT, INVERSE)) if is_upright else (LEFT, (RIGHT, INVERSE), (RIGHT, REGULAR))
 
-    is_upright = BOARD_ORIENTATION[board_index]
+    is_upright = BOARD_NUMBER_TO_ORIENTATION[board_index]
 
     # Determines if the given board index (board number 1-6) has a board in that direction
     has_board_functions = {
-        UP: lambda board_index: BOARD_ORDERS[board_index] >= 2,
-        DOWN: lambda board_index: BOARD_ORDERS[board_index] <= 3,
-        LEFT: lambda board_index: BOARD_ORDERS[board_index] % 2 == 1,
-        RIGHT: lambda board_index: BOARD_ORDERS[board_index] % 2 == 0,
+        UP: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX[board_index] >= 2,
+        DOWN: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX[board_index] <= 3,
+        LEFT: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX[board_index] % 2 == 1,
+        RIGHT: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX[board_index] % 2 == 0,
         UP_LEFT: lambda board_index: has_board_functions[UP](board_index) and has_board_functions[LEFT](board_index),
         DOWN_RIGHT: lambda board_index: has_board_functions[DOWN](board_index) and has_board_functions[RIGHT](board_index)
     }
 
     # Determines the neighbouring board given the direction and board number (1-6)
     get_board_functions = {
-        UP: lambda board_index: BOARD_ORDERS_REVERSED[BOARD_ORDERS[board_index] - 2],
-        DOWN: lambda board_index: BOARD_ORDERS_REVERSED[BOARD_ORDERS[board_index] + 2],
-        LEFT: lambda board_index: BOARD_ORDERS_REVERSED[BOARD_ORDERS[board_index] - 1],
-        RIGHT: lambda board_index: BOARD_ORDERS_REVERSED[BOARD_ORDERS[board_index] + 1],
-        UP_LEFT: lambda board_index: BOARD_ORDERS_REVERSED[BOARD_ORDERS[board_index] - 3],
-        DOWN_RIGHT: lambda board_index: BOARD_ORDERS_REVERSED[BOARD_ORDERS[board_index] + 3]
+        UP: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX_REVERSED[BOARD_NUMBER_TO_BOARD_INDEX[board_index] - 2],
+        DOWN: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX_REVERSED[BOARD_NUMBER_TO_BOARD_INDEX[board_index] + 2],
+        LEFT: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX_REVERSED[BOARD_NUMBER_TO_BOARD_INDEX[board_index] - 1],
+        RIGHT: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX_REVERSED[BOARD_NUMBER_TO_BOARD_INDEX[board_index] + 1],
+        UP_LEFT: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX_REVERSED[BOARD_NUMBER_TO_BOARD_INDEX[board_index] - 3],
+        DOWN_RIGHT: lambda board_index: BOARD_NUMBER_TO_BOARD_INDEX_REVERSED[BOARD_NUMBER_TO_BOARD_INDEX[board_index] + 3]
     }
 
     # How to find the neighbour given the settings and current cell location
@@ -225,7 +220,7 @@ def get_off_tile_neighbour(board_index, row, column):
     
     board_board_index = get_board_functions[a](board_index)
 
-    if BOARD_ORIENTATION[board_board_index]:
+    if BOARD_NUMBER_TO_ORIENTATION[board_board_index]:
         x, y = direction_to_index[(b, c)]
         return f"{board_board_index}{x}{y}"
     else:
@@ -233,13 +228,10 @@ def get_off_tile_neighbour(board_index, row, column):
         return f"{board_board_index}{x}{y}"
 
 
-# Get the neighbours of a given cell id
-def get_neighbours(id: str):
+def get_neighbours_from_cell_id(id: str):
     board_index = int(id[0])
     row = int(id[1])
     column = int(id[2])
-
-    print(f"getting neighbours for: ({board_index}, {row}, {column})")
 
     neighbours = []
 
@@ -260,6 +252,6 @@ def get_neighbours(id: str):
     
     neighbours_off_tile_fixed = map(lambda x: get_off_tile_neighbour(int(x[0]), int(x[1]), int(x[2])), neighbours)
 
-    neighbours = map(lambda x: CELLS[x], filter(lambda x: x is not None, neighbours_off_tile_fixed))
+    neighbours = map(lambda x: ID_TO_CELL_MAP[x], filter(lambda x: x is not None, neighbours_off_tile_fixed))
 
     return neighbours

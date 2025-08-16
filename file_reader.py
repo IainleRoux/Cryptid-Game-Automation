@@ -16,13 +16,9 @@ def read_info_file(file_name):
     with open(file_name) as file:
         player_clues = read_player_clues(file)
 
-    print(board_orders)
-    print(structure_placement)
-    print(f"Player clues: {player_clues}")
+    cell_list = init_board(board_orders, structure_placement)
 
-    board = init_board(board_orders, structure_placement)
-
-    return board, player_clues
+    return cell_list, player_clues
 
 
 def read_board_orders(file):

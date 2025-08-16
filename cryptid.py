@@ -1,5 +1,5 @@
 
-from board import CELLS, DISTANCES
+from board import DISTANCES
 from constants import ABANDONED_SHACK, BEAR, BLUE, COUGAR, DESERT, FOREST, GREEN, ID, MOUNTAIN, STANDING_STONE, SWAMP, WATER, WHITE
 from file_reader import read_info_file
 
@@ -40,9 +40,9 @@ CLUE_PREDICATE_MAP = {
 
 
 def init():
-    board, player_clues = read_info_file("info.md")
+    cell_list, player_clues = read_info_file("info.md")
 
-    return board, player_clues
+    return cell_list, player_clues
 
 def get_possible_cells(board, player_clues):
     player_possible_cells: dict[str, set[str]] = {}
@@ -55,7 +55,8 @@ def get_possible_cells(board, player_clues):
                 player_possible_cells[player_name].add(cell[ID])
 
     for player_name, cells in player_possible_cells.items():
-        print(player_name, cells)
+        print(f"Possible cells for {player_name} ({len(cells)}): {cells}")
+        print()
 
     intersetion_of_player_cells = None
 
@@ -69,13 +70,8 @@ def get_possible_cells(board, player_clues):
     return intersetion_of_player_cells
 
 if __name__ == "__main__":
-    board, player_clues = init()
+    cell_list, player_clues = init()
 
-    possible_cells = get_possible_cells(board, player_clues)
+    possible_cells = get_possible_cells(cell_list, player_clues)
 
-    print(possible_cells)
-    print()
-    
-    for cell in board:
-        if cell['id'] in possible_cells:
-            print(cell)
+    print(f"Possible cryptid cells ({len(possible_cells)}): {possible_cells}")
