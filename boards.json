@@ -1,0 +1,438 @@
+[
+    {
+        "rows": [
+            {
+                "columns": [
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert",
+                        "animal": "bear"
+                    },
+                    {
+                        "terrain": "desert",
+                        "animal": "bear"
+                    },
+                    {
+                        "terrain": "forest",
+                        "animal": "bear"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "rows": [
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp",
+                        "animal": "cougar"
+                    },
+                    {
+                        "terrain": "forest",
+                        "animal": "cougar"
+                    },
+                    {
+                        "terrain": "forest",
+                        "animal": "cougar"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "desert"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "rows": [
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "water"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp",
+                        "animal": "cougar"
+                    },
+                    {
+                        "terrain": "swamp",
+                        "animal": "cougar"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "mountain",
+                        "animal": "cougar"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "rows": [
+            {
+                "columns": [
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water",
+                        "animal": "cougar"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest",
+                        "animal": "cougar"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "rows": [
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "mountain",
+                        "animal": "bear"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water",
+                        "animal": "bear"
+                    },
+                    {
+                        "terrain": "water",
+                        "animal": "bear"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "rows": [
+            {
+                "columns": [
+                    {
+                        "terrain": "desert",
+                        "animal": "bear"
+                    },
+                    {
+                        "terrain": "desert"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "forest"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "mountain",
+                        "animal": "bear"
+                    },
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "swamp"
+                    },
+                    {
+                        "terrain": "forest"
+                    },
+                    {
+                        "terrain": "forest"
+                    }
+                ]
+            },
+            {
+                "columns": [
+                    {
+                        "terrain": "mountain"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "water"
+                    },
+                    {
+                        "terrain": "forest"
+                    }
+                ]
+            }
+        ]
+    }
+]
