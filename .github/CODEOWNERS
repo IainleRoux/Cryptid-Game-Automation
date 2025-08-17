@@ -1,0 +1,5 @@
+# Protect the main branch
+/main @IainleRoux
+
+# Protect the develop branch
+/develop @IainleRoux
