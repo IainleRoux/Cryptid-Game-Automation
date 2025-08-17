@@ -1,3 +1,5 @@
+VERSION= '0.0.1'
+
 ROWS = 'rows'
 COLUMNS = 'columns'
 ID = 'id'
