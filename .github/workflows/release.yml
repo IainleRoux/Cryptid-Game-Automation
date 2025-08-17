@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # Grant write permissions to the GITHUB_TOKEN
+
 jobs:
   create-release:
     name: Create GitHub Release
