@@ -2,6 +2,7 @@ import re
 
 from board import init_board
 
+SETUP_INFO_FILE = ".setup/info.md"
 INFO_FILE = "info.md"
 
 
@@ -85,6 +86,7 @@ def read_player_clues(file):
 
     return player_clues
 
+
 def write_to_possible_cells_to_info_file(cells: set):
     lines = None
 
@@ -104,6 +106,11 @@ def write_to_possible_cells_to_info_file(cells: set):
                 found = False
 
             if found and not wrote_lines:
+                if len(cells) == 108:
+                    f.write(f"- All states\n\n")
+                    wrote_lines = True
+                    continue
+
                 for i in range(1, 7):
                     filtered_cells = list(filter(lambda x: int(x[0]) == i, cells))
 
@@ -124,3 +131,13 @@ def write_to_possible_cells_to_info_file(cells: set):
 
             if line.startswith('### Possible Cryptid Cells:'):
                 found = True
+
+
+def reset_game_info():
+    lines = None
+
+    with open(SETUP_INFO_FILE, "r") as setup_file:
+        lines = setup_file.readlines()
+
+    with open(INFO_FILE, "w") as info_file:
+        info_file.writelines(lines)

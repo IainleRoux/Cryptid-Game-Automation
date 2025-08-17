@@ -1,7 +1,8 @@
 
+from sys import argv
 from board import DISTANCES
 from constants import ABANDONED_SHACK, BEAR, BLUE, COUGAR, DESERT, FOREST, GREEN, ID, MOUNTAIN, STANDING_STONE, SWAMP, WATER, WHITE
-from file_reader import read_info_file, write_to_possible_cells_to_info_file
+from file_reader import read_info_file, reset_game_info, write_to_possible_cells_to_info_file
 
 
 def get_predicate1(criteria: str, distance: int):
@@ -77,6 +78,10 @@ def get_possible_cells(board, player_clues):
 
 
 if __name__ == "__main__":
+    if len(argv) > 1 and argv[1] == 'reset':
+        reset_game_info()
+        exit
+
     cell_list, player_clues = init()
 
     possible_cells = get_possible_cells(cell_list, player_clues)
