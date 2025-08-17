@@ -2,7 +2,7 @@ from constants import ABANDONED_SHACK, ANIMAL, BEAR, BLUE, BOTTOM_RIGHT, COLOUR,
 
 import json
 
-BOARDS_FILE_NAME = "boards.json"
+BOARDS_FILE_NAME = ".setup/boards.json"
 
 # The names used in the info file
 STRUCTURE_NAMING_MAP = {
