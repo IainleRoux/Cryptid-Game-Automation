@@ -1,0 +1,9 @@
+[submodule "cryptid-game-tournament_player"]
+	path = cryptid-game-tournament_player
+	url = https://github.com/IainleRoux/cryptid-game-tournament_player.git
+[submodule "cryptid-game-tournament_state-management"]
+	path = cryptid-game-tournament_state-management
+	url = https://github.com/IainleRoux/cryptid-game-tournament_state-management.git
+[submodule "cryptid-game-tournament_referee"]
+	path = cryptid-game-tournament_referee
+	url = https://github.com/IainleRoux/cryptid-game-tournament_referee.git
