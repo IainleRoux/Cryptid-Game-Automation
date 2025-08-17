@@ -77,11 +77,7 @@ def get_possible_cells(board, player_clues):
     return intersetion_of_player_cells
 
 
-if __name__ == "__main__":
-    if len(argv) > 1 and argv[1] == 'reset':
-        reset_game_info()
-        exit
-
+def update_game():
     cell_list, player_clues = init()
 
     possible_cells = get_possible_cells(cell_list, player_clues)
@@ -89,3 +85,36 @@ if __name__ == "__main__":
     print(f"Possible cryptid cells ({len(possible_cells)}): {possible_cells}")
 
     write_to_possible_cells_to_info_file(possible_cells)
+
+
+def play_game():
+    print("Starting the game...")
+    reset_game_info()
+
+    print("Game setup...")
+    update_game()
+
+    while True:
+        next_move = input('Enter next move: ')
+
+        if next_move in ['exit', 'quit']:
+            print("Exiting the game.")
+            break
+
+        print("TODO: Implement game logic based on the next move.")
+
+
+if __name__ == "__main__":
+    if len(argv) > 1 and argv[1] in ['reset', 'setup']:
+        reset_game_info()
+        exit
+
+    if len(argv) > 1 and argv[1] == 'update':
+        update_game()
+        exit
+    
+    if len(argv) > 1 and argv[1] == 'play':
+        play_game()
+        exit
+    
+    update_game()
