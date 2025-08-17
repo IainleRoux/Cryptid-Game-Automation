@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # Grant write permissions to the GITHUB_TOKEN
+
 jobs:
   create-release:
     name: Create GitHub Release
@@ -15,13 +18,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Extract version from constants.py
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(grep "^VERSION" constants.py | cut -d "'" -f2)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       # Create a release
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
           body: |
             This release was automatically generated after merging into the main branch.
           draft: false
