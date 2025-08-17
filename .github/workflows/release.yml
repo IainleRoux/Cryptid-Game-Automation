@@ -22,7 +22,7 @@ jobs:
       - name: Get Version
         id: get_version
         run: |
-          VERSION=$(grep "^VERSION" constants.py | cut -d "'" -f2)
+          VERSION=$(grep "^VERSION" .env | cut -d "'" -f2)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # Create a release
